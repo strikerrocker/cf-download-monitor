@@ -1,0 +1,15 @@
+.select {
+  margin-left: 20px;
+  width: 50vw;
+}
+
+.title {
+    margin-top: 25px;
+}
+
+.content {
+  align-items: center;
+  text-align: center;
+  padding: 0 50px;
+  min-height: 100vh;
+}

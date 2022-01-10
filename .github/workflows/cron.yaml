@@ -1,0 +1,13 @@
+name: every-12-hrs-cron
+on:
+  schedule:
+    - cron: "0 */12 * * *"
+  workflow_dispatch:
+jobs:
+  cron:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Force update backend data
+        run: curl --request GET --url https://cf-download-monitor.vercel.app/api/update_tracked_projects_backend
+      - name: Save tracked projects downloads
+        run: curl --request GET --url https://cf-download-monitor.vercel.app/api/save_tracked_projects_downloads
