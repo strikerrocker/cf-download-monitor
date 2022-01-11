@@ -45,7 +45,7 @@ async function getData(res, projectID) {
       data: projectDownloads,
     };
     res.statusCode = 200;
-    console.log(message);
+    console.log(message.success);
     return res.json(message);
   });
 }
