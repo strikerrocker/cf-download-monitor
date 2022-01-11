@@ -81,7 +81,7 @@ export default function Graph() {
     };
     for (var j = 0; j < tracked_downloads.length; j++) {
       var data = tracked_downloads[j];
-      pushData(data["dateTime"], data["downloads"]);
+      pushData(simpleTime(data["dateTime"]), data["downloads"]);
     }
     if (chartRef != undefined && chartRef.current != undefined) {
       chartRef.current.data.labels = dates;
