@@ -26,7 +26,10 @@ ChartJS.register(
   Legend
 );
 
-var simpleTime = (dateTime) => dateTime.slice(0, -8).replace("T", " ");
+var simpleTime = (dateTime) => {
+  var initial = new Date(dateTime).toLocaleString().slice(0, -3);
+  return initial.slice(0,6)+initial.slice(8,10)+' '+initial.slice(12,18)
+};
 
 export default function Graph() {
   var tracked_projects = [];
