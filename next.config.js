@@ -8,14 +8,16 @@ module.exports = {
     ignoreBuildErrors: true,
   },
   async headers() {
-    return [{ 
-      source: "*",
-      headers:[
-        {
-          key:'Access-Control-Allow-Origin',
-          value:'*'
-        }
-      ] 
-    }];
+    return [
+      {
+        source: "/(.*)?",
+        headers: [
+          {
+            key: "Access-Control-Allow-Origin",
+            value: "*",
+          },
+        ],
+      },
+    ];
   },
 };
