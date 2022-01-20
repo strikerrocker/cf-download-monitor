@@ -16,14 +16,13 @@ export default async (req, res) => {
     });
     if (i == projects.length - 1) {
       var t2 = new Date();
-      res.statusCode = 200;
       var message = {
         updated_projects: updatedProjects,
         start_time: t1,
         end_time: t2,
       };
       console.log(message);
-      return res.json(message);
+      return res.status(200).json(message);
     }
   }
 };

@@ -1,34 +1,28 @@
 import { connectToCfApi } from "./_connector";
 
 export default async (req, res) => {
-  var params = new URL(req.url, `http://${req.headers.host}`).searchParams;
-  res.statusCode = 200;
   if (
     req.body !== "" &&
     req.body.projectID !== undefined &&
     req.body.projectID !== ""
   ) {
-    var data = await getData(req.body.projectID);
-    return res.json(data);
+    return await getData(req.body.projectID,res);
   } else if (
-    params.has("projectID") &&
-    params.get("projectID") != undefined &&
-    params.get("projectID") != ""
+    req.query.projectID != undefined &&
+    req.query.projectID != ""
   ) {
-    var data = await getData(params.get("projectID"));
-    return res.json(data);
+    return await getData(req.query.projectID,res);
   } else {
-    res.statusCode = 400;
     var message =
-      "Invalid data. Expected projectID but got " + JSON.stringify(req.body);
+      "Invalid data. Expected projectID but got " + req.body;
     console.log(message);
-    return res.json({ error: message });
+    return res.status(400).json({ error: message });
   }
 };
 
-async function getData(projectID) {
+async function getData(projectID,res) {
   var response = await connectToCfApi("v1/mods/" + projectID);
   var data = response.data.data;
   console.log("Got project details for project " + projectID);
-  return data;
+  return res.status(200).json(data);
 }

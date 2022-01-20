@@ -24,6 +24,5 @@ export default async (req, res) => {
       });
     }
   });
-  res.statusCode = 200;
-  return res.json("Updated project Names");
+  return res.status(200).json("Updated project Names");
 };

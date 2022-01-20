@@ -14,11 +14,10 @@ export default async (req, res) => {
     updatedProjects.push(id);
 
     if (i == projects.length - 1) {
-      res.statusCode = 200;
       console.log(
         "Updated backend data for projects : " + JSON.stringify(updatedProjects)
       );
-      return res.json({
+      return res.status(200).json({
         updated_projects: updatedProjects,
       });
     }

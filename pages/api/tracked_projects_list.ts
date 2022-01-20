@@ -10,8 +10,7 @@ export default async (req, res) => {
     projects.push({id:doc.projectID,name:doc.name});
   });
   await stream.on("end", () => {
-    res.statusCode = 200;
-    console.log(projects);
-    return res.json(projects);
+    console.log("Got tracked projects list with names.");
+    return res.status(200).json(projects);
   });
 };

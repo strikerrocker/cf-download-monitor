@@ -2,29 +2,25 @@ import { connectToDatabase } from "./_connector";
 
 export default async (req, res) => {
   var params = new URL(req.url, `http://${req.headers.host}`).searchParams;
-
+  res.statusCode = 500;
   if (
     req.body !== "" &&
     req.body.projectID !== undefined &&
     req.body.projectID !== ""
   ) {
-    res.statusCode = 500;
     var a = await getData(res, req.body.projectID);
     return a;
   } else if (
-    params.has("projectID") &&
-    params.get("projectID") != undefined &&
-    params.get("projectID") != ""
+    req.query.projectID != undefined &&
+    req.query.projectID != ""
   ) {
-    res.statusCode = 500;
-    var a = await getData(res, params.get("projectID"));
+    var a = await getData(res, req.query.projectID);
     return a;
   } else {
-    res.statusCode = 400;
     var message =
       "Invalid data. Expected projectID but got " + JSON.stringify(req.body);
     console.log(message);
-    return res.json({ error: message });
+    return res.status(400).json({ error: message });
   }
 };
 
@@ -44,8 +40,7 @@ async function getData(res, projectID) {
       success: "Got historic downloads for project " + projectID,
       data: projectDownloads,
     };
-    res.statusCode = 200;
     console.log(message.success);
-    return res.json(message);
+    return res.status(200).json(message);
   });
 }

@@ -68,17 +68,14 @@ export default async (req, res) => {
       message =
         "StrikerRocker account doesn't have permission to manage files in the given project.";
       console.log(message);
-      res.statusCode = 500;
-      return res.json({ error: message });
+      return res.status(500).json({ error: message });
     }
     console.info("Updated File : " + JSON.stringify(message));
-    res.statusCode = 200;
-    return res.json(message);
+    return res.status(200).json(message);
   } else {
-    res.statusCode = 400;
     message =
       "Invalid data. Expected projectID but got " + JSON.stringify(req.body);
     console.log(message);
-    return res.json({ error: message });
+    return res.status(400).json({ error: message });
   }
 };
