@@ -1,4 +1,4 @@
-import { connectToCfApi } from "./_connector";
+import { sendToCFProxyAPI } from "./_connector";
 
 export default async (req, res) => {
   if (
@@ -21,7 +21,7 @@ export default async (req, res) => {
 };
 
 async function getData(projectID,res) {
-  var response = await connectToCfApi("v1/mods/" + projectID);
+  var response = await sendToCFProxyAPI("v1/mods/" + projectID);
   var data = response.data;
   console.log("Got project details for project " + projectID);
   return res.status(200).json(data);

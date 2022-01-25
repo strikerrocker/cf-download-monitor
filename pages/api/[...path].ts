@@ -1,4 +1,4 @@
-import { connectToCfApi } from "../_connector";
+import { connectToCfApi } from "./_connector";
 
 export default async function handler(req, res) {
   const { path } = req.query;

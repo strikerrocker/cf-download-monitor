@@ -1,4 +1,4 @@
-import { connectToApi } from "./_connector";
+import { sendToCFProxyAPI } from "./_connector";
 
 export default async (req, res) => {
   if (
@@ -21,7 +21,7 @@ export default async (req, res) => {
 };
 
 async function getDownloads(projectID, res) {
-  var response = await connectToApi("project_data?projectID="+projectID);
+  var response = await sendToCFProxyAPI("v1/mods/"+projectID);
   var downloadCount = response.data.downloadCount;
   var message = "Got downloads for project " + projectID;
   console.log(message);

@@ -13,7 +13,7 @@ export default async (req, res) => {
     await db
       .db("downloads_db")
       .collection("projects")
-      .insertOne({ projectID: projectID, name: response.name });
+      .insertOne({ projectID: projectID, name: response.data.name });
     message = "Added project " + projectID + " successfully.";
     console.log(message);
     return res.status(202).json({ success: message });
