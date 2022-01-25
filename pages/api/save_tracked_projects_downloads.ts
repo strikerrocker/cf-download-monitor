@@ -1,4 +1,4 @@
-import { connectToApi, connectToDatabase } from "./_connector";
+import { connectToApi, connectToCfApi, connectToDatabase } from "./_connector";
 
 export default async (req, res) => {
   var t1 = new Date();
@@ -8,11 +8,11 @@ export default async (req, res) => {
   var projects = Array.from(response.data);
   for (var i = 0; i < projects.length; i++) {
     var id = projects[i];
-    var response = await connectToApi("project_data?projectID="+id);
-    await addToDB(db, id, response.data.name, response.data.downloadCount, response.data.dateModified);
+    var projectData = await connectToCfApi("v1/mods/"+id);
+    await addToDB(db, id, projectData.data.name, projectData.data.downloadCount, projectData.data.dateModified);
     updatedProjects.push({
-      project_name: response.data.name,
-      download_count: response.data.downloadCount,
+      project_name: projectData.data.name,
+      download_count: projectData.data.downloadCount,
     });
     if (i == projects.length - 1) {
       var t2 = new Date();
