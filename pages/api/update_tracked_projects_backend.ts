@@ -1,4 +1,4 @@
-import { connectToApi, connectToDatabase } from "./_connector";
+import { connectToApi } from "./_connector";
 
 export default async (req, res) => {
   var updatedProjects = [];

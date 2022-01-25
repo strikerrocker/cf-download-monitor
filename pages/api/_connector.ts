@@ -16,7 +16,7 @@ export async function connectToDatabase() {
   return await client.connect();
 }
 
-export async function connectToCfApi(endpoint, params?) {
+export async function connectToCfApi(endpoint, data?) {
   var CF_ACCESSTOKEN = Buffer.from(
     process.env.CF_ACCESSTOKEN,
     "base64"
@@ -26,13 +26,21 @@ export async function connectToCfApi(endpoint, params?) {
   }
   var BASE_URL = "https://api.curseforge.com/";
   const headers = {
+    "Content-Type": "application/json",
     Accept: "application/json",
     "x-api-key": CF_ACCESSTOKEN,
   };
-  return await axios.get(BASE_URL + endpoint, {
+  var res;
+  await fetch(BASE_URL + endpoint, {
+    method: data ? "POST" : "GET",
+    body: data ? JSON.stringify(data) : undefined,
     headers: headers,
-    params: params,
-  });
+  })
+    .then((response) => {
+      res = response.json();
+    })
+    .catch((err) => console.log(err));
+  return res;
 }
 
 export async function connectToApi(endpoint,body?){

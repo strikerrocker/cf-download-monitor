@@ -8,14 +8,12 @@ export default async (req, res) => {
     req.body.projectID !== undefined &&
     req.body.projectID !== ""
   ) {
-    var response = await connectToApi("project_data", {
-      projectID: req.body.projectID,
-    });
     var projectID = parseInt(req.body.projectID);
+    var response = await connectToApi("project_data?projectID="+projectID);
     await db
       .db("downloads_db")
       .collection("projects")
-      .insertOne({ projectID: projectID, name: response.data.name });
+      .insertOne({ projectID: projectID, name: response.name });
     message = "Added project " + projectID + " successfully.";
     console.log(message);
     return res.status(202).json({ success: message });

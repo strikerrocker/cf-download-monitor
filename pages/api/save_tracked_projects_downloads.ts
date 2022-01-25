@@ -8,7 +8,7 @@ export default async (req, res) => {
   var projects = Array.from(response.data);
   for (var i = 0; i < projects.length; i++) {
     var id = projects[i];
-    var response = await connectToApi("project_data", { projectID: id });
+    var response = await connectToApi("project_data?projectID="+id);
     await addToDB(db, id, response.data.name, response.data.downloadCount, response.data.dateModified);
     updatedProjects.push({
       project_name: response.data.name,

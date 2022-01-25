@@ -18,13 +18,9 @@ export default async (req, res) => {
     req.body.projectID !== undefined &&
     req.body.projectID !== ""
   ) {
-    var response = await connectToApi("project_data", {
-      projectID: req.body.projectID,
-    });
-    var data = response.data;
-    var file = data.latestFiles[0];
+    var response = await connectToApi("project_data?projectID="+req.body.projectID);
 
-    var fileID = file.id;
+    var fileID = response.data.latestFiles[0].id;
     console.info(
       "Trying to update file " + fileID + " in project " + req.body.projectID
     );
@@ -32,7 +28,7 @@ export default async (req, res) => {
       "v1/mods/" + req.body.projectID + "/files/" + fileID + "/changelog"
     );
     var output = [];
-    var changelogData = changelog.data.data;
+    var changelogData = changelog.data;
 
     //If <hr> at end trim else add <hr>
     output.push({ OldChangeLog: changelogData });

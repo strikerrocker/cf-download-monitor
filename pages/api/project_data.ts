@@ -22,7 +22,7 @@ export default async (req, res) => {
 
 async function getData(projectID,res) {
   var response = await connectToCfApi("v1/mods/" + projectID);
-  var data = response.data.data;
+  var data = response.data;
   console.log("Got project details for project " + projectID);
   return res.status(200).json(data);
 }
