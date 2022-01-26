@@ -18,8 +18,8 @@ export default async (req, res) => {
     req.body.projectID !== undefined &&
     req.body.projectID !== ""
   ) {
-    var response = await connectToApi("project_data?projectID="+req.body.projectID);
-
+    var response = await (await connectToCfApi("v1/mods/"+req.body.projectID)).json();
+    console.log(response)
     var fileID = response.data.latestFiles[0].id;
     console.info(
       "Trying to update file " + fileID + " in project " + req.body.projectID
