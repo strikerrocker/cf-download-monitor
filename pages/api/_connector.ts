@@ -15,7 +15,9 @@ export async function connectToDatabase() {
   cachedDb = client;
   return await client.connect();
 }
-
+/**
+ * Returns a response object convert to text or json before using it.
+ */
 export async function connectToCfApi(endpoint, data?) {
   var CF_ACCESSTOKEN = Buffer.from(
     process.env.CF_ACCESSTOKEN,
@@ -35,24 +37,20 @@ export async function connectToCfApi(endpoint, data?) {
     method: data ? "POST" : "GET",
     body: data ? JSON.stringify(data) : undefined,
     headers: headers,
-  })
-    .then((response) => {
-      res = response.json();
-    })
-    .catch((err) => console.log(err));
+  }).then((response) => (res = response));
   return res;
 }
 
-export async function connectToApi(endpoint,body?){
-  var BASE_URL="https://cf-download-monitor.vercel.app/api/";
-  return await axios.get(BASE_URL+endpoint,{
-    data:body
+export async function connectToApi(endpoint, body?) {
+  var BASE_URL = "https://cf-download-monitor.vercel.app/api/";
+  return await axios.get(BASE_URL + endpoint, {
+    data: body,
   });
 }
 
-export async function sendToCFProxyAPI(endpoint,body?){
-  var BASE_URL="https://cf-download-monitor.vercel.app/api/";
-  return await axios.get(BASE_URL+endpoint,{
-    data:body
+export async function sendToCFProxyAPI(endpoint, body?) {
+  var BASE_URL = "https://cf-download-monitor.vercel.app/api/";
+  return await axios.get(BASE_URL + endpoint, {
+    data: body,
   });
 }

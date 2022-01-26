@@ -24,12 +24,9 @@ export default async (req, res) => {
     console.info(
       "Trying to update file " + fileID + " in project " + req.body.projectID
     );
-    var changelog = await connectToCfApi(
-      "v1/mods/" + req.body.projectID + "/files/" + fileID + "/changelog"
-    );
+    var changelog = await connectToCfApi("v1/mods/" + req.body.projectID + "/files/" + fileID + "/changelog");
     var output = [];
-    var changelogData = changelog.data;
-
+    var changelogData = (await changelog.json()).data;
     //If <hr> at end trim else add <hr>
     output.push({ OldChangeLog: changelogData });
     if (changelogData.substring(changelogData.length - 4) == "<br>") {
