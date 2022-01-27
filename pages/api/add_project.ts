@@ -1,4 +1,4 @@
-import { connectToApi, connectToDatabase } from "./_connector";
+import { connectToApi, connectToCfApi, connectToDatabase } from "./_connector";
 
 export default async (req, res) => {
   const db = await connectToDatabase();
@@ -9,7 +9,7 @@ export default async (req, res) => {
     req.body.projectID !== ""
   ) {
     var projectID = parseInt(req.body.projectID);
-    var response = await connectToApi("project_data?projectID="+projectID);
+    var response = await (await connectToCfApi("v1/mods/"+projectID)).json();
     await db
       .db("downloads_db")
       .collection("projects")
