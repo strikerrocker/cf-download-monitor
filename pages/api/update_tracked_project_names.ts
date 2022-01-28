@@ -1,4 +1,4 @@
-import { connectToApi, connectToCfApi, connectToDatabase } from "./_connector";
+import { connectToCfApi, connectToDatabase } from "./_connector";
 
 export default async (req, res) => {
   res.statusCode = 500;
@@ -15,7 +15,7 @@ export default async (req, res) => {
           },
         }
       );
-      console.log({
+      console.log("Updated Project Names : "+ {
         projectID: doc.projectID,
         oldName: doc.name,
         newName: project_data.data.name,

@@ -37,7 +37,8 @@ export async function connectToCfApi(endpoint, data?) {
     method: data ? "POST" : "GET",
     body: data ? JSON.stringify(data) : undefined,
     headers: headers,
-  }).then((response) => (res = response));
+  }).then((response) => (res = response))
+  .catch(err=>console.error(err));
   return res;
 }
 
