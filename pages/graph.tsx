@@ -27,8 +27,9 @@ ChartJS.register(
 );
 
 var simpleTime = (dateTime) => {
-  var initial = new Date(dateTime).toLocaleString().slice(0, -3);
-  return initial.slice(0,6)+initial.slice(8,10)+' '+initial.slice(12,18)
+  var date = new Date(dateTime);
+  return date.getDate()+"/"+date.getMonth()+1+"/"+date.getFullYear().toString().substring(-2)
+  +" "+date.getHours()+":"+('0'+date.getMinutes()).slice(-2);
 };
 
 export default function Graph() {
@@ -110,13 +111,6 @@ export default function Graph() {
           <Select
             className={graphStyles.select}
             onChange={onSelected}
-            showSearch
-            filterOption={(input, option) =>
-              option.children
-                .toString()
-                .toLowerCase()
-                .indexOf(input.toLowerCase()) >= 0
-            }
             disabled={disabled}
           >
             {options}
