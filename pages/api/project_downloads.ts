@@ -1,11 +1,8 @@
-import { sendToCFProxyAPI } from "./_connector";
+import { connectToCfApi } from "./_connector";
 
 export default async (req, res) => {
-  if (
-    req.body !== "" &&
-    req.body.projectID !== undefined &&
-    req.body.projectID !== ""
-  ) {
+  var { projectID } = req.body;
+  if (projectID !== undefined && projectID !== "") {
     await getDownloads(req.body.projectID, res);
   } else if (req.query.projectID != undefined && req.query.projectID != "") {
     await getDownloads(req.query.projectID, res);
@@ -18,8 +15,9 @@ export default async (req, res) => {
 };
 
 async function getDownloads(projectID, res) {
-  var response = await sendToCFProxyAPI("v1/mods/" + projectID);
-  var data = response.data.data;
+  var response = await (await connectToCfApi("v1/mods/" + projectID)).json();
+  var data = response.data;
+  console.log(data);
   var message = "Got downloads for project " + data.name + " with id " + projectID;
   console.log(message);
   res.status(200).json({ downloadCount: data.downloadCount, success: message });

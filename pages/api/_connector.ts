@@ -48,10 +48,3 @@ export async function connectToApi(endpoint, body?) {
     data: body,
   });
 }
-
-export async function sendToCFProxyAPI(endpoint, body?) {
-  var BASE_URL = "https://cf-download-monitor.vercel.app/api/";
-  return await axios.get(BASE_URL + endpoint, {
-    data: body,
-  });
-}
