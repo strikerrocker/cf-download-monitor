@@ -28,7 +28,7 @@ ChartJS.register(
 
 var simpleTime = (dateTime) => {
   var date = new Date(dateTime);
-  return date.getDate()+"/"+date.getMonth()+1+"/"+date.getFullYear().toString().substring(-2)
+  return date.getDate()+"/"+(date.getMonth()+1)+"/"+date.getFullYear().toString().substring(-2)
   +" "+date.getHours()+":"+('0'+date.getMinutes()).slice(-2);
 };
 
@@ -57,6 +57,7 @@ export default function Graph() {
           setTrackedProjects(tracked_projects);
           setProjectDownloads(project_downloads);
           console.log("Fetched Download history.");
+          alert("Fetched Download history.")
           setDisabled(false);
         });
     fetchData();
