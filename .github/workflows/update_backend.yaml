@@ -1,4 +1,4 @@
-name: every-12-hrs-cron
+name: Force update backend data
 on:
   schedule:
     - cron: "30 12 * * *"

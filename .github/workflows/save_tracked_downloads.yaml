@@ -1,4 +1,4 @@
-name: every-12-hrs-cron
+name: Save tracked projects downloads
 on:
   schedule:
     - cron: "0 13 * * *"
