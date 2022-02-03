@@ -17,7 +17,6 @@ export default async (req, res) => {
 async function getDownloads(projectID, res) {
   var response = await (await connectToCfApi("v1/mods/" + projectID)).json();
   var data = response.data;
-  console.log(data);
   var message = "Got downloads for project " + data.name + " with id " + projectID;
   console.log(message);
   res.status(200).json({ downloadCount: data.downloadCount, success: message });

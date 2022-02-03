@@ -4,7 +4,6 @@ export default async (req, res) => {
   var updatedProjects = [];
   var response = await connectToApi("tracked_projects");
   var projects = Array.from(response.data);
-  console.log(projects);
 
   for (var i = 0; i < projects.length; i++) {
     var id = projects[i];
