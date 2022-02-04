@@ -8,7 +8,7 @@ export default async (req, res) => {
     req.body.projectID !== undefined &&
     req.body.projectID !== ""
   ) {
-    var a = await getData(res, req.body.projectID);
+    var a = await getData(res, parseInt(req.body.projectID));
     return a;
   } else if (req.query.projectID != undefined && req.query.projectID != "") {
     var a = await getData(res, parseInt(req.query.projectID));
