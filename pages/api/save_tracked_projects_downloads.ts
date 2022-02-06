@@ -27,7 +27,7 @@ export default async (req, res) => {
   }
 };
 
-async function addToDB(db, id, name, downloads, dateTime) {
+export async function addToDB(db, id, name, downloads, dateTime) {
   await db.db("downloads_db").collection("projects_downloads").insertOne({
     id: id,
     name: name,
