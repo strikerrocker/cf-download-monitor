@@ -1,16 +1,14 @@
 import { connectToCfApi, connectToDatabase } from "./_connector";
-import { addToDB } from "./save_tracked_projects_downloads";
+import { addDwnldEntry } from "./save_tracked_projects_downloads";
 
 export default async (req, res) => {
-  const db = await connectToDatabase();
   if (
     req.body !== "" &&
     req.body.projectID !== undefined &&
     req.body.projectID !== ""
   ) {
     var response = await (await connectToCfApi("v1/mods/" + req.body.projectID)).json();
-    await addToDB(
-      db,
+    await addDwnldEntry(
       req.body.projectID,
       response.data.name,
       response.data.downloadCount,

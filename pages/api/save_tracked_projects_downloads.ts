@@ -2,14 +2,13 @@ import { connectToApi, connectToCfApi, connectToDatabase } from "./_connector";
 
 export default async (req, res) => {
   var t1 = new Date();
-  const db = await connectToDatabase();
   var updatedProjects = [];
   var response = await connectToApi("tracked_projects");
   var projects = Array.from(response.data);
   for (var i = 0; i < projects.length; i++) {
     var id = projects[i];
     var projectData = await (await connectToCfApi("v1/mods/"+id)).json()
-    addToDB(db, id, projectData.data.name, projectData.data.downloadCount, projectData.data.dateModified);
+    addDwnldEntry(id, projectData.data.name, projectData.data.downloadCount, projectData.data.dateModified);
     updatedProjects.push({
       project_name: projectData.data.name,
       download_count: projectData.data.downloadCount,
@@ -27,8 +26,9 @@ export default async (req, res) => {
   }
 };
 
-export async function addToDB(db, id, name, downloads, dateTime) {
-  await db.db("downloads_db").collection("projects_downloads").insertOne({
+export async function addDwnldEntry(id, name, downloads, dateTime) {
+  const db = await connectToDatabase();
+  await db.db("downloads_db").collection("test_projects_downloads").insertOne({
     id: id,
     name: name,
     downloads: downloads,

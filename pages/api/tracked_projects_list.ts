@@ -4,13 +4,10 @@ export default async (req, res) => {
   res.statusCode = 500;
   const db = await connectToDatabase();
   const entry = await db.db("downloads_db").collection("projects");
-  var projects = [];
-  var stream = await entry.find().stream();
-  await stream.on("data", (doc) => {
-    projects.push({id:doc.projectID,name:doc.name});
+  var projects = (await entry.find().toArray()).map((b) => {
+    delete b._id;
+    return b;
   });
-  await stream.on("end", () => {
-    console.log("Got tracked projects list with names.");
-    return res.status(200).json(projects);
-  });
+  console.log("Got tracked projects list with names.");
+  return res.status(200).json(projects);
 };

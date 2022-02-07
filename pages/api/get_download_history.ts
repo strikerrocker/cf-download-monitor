@@ -1,7 +1,6 @@
 import { connectToDatabase } from "./_connector";
 
 export default async (req, res) => {
-  var params = new URL(req.url, `http://${req.headers.host}`).searchParams;
   res.statusCode = 500;
   if (
     req.body !== "" &&
@@ -25,9 +24,9 @@ async function getData(res, projectID) {
   const db = await connectToDatabase();
   const entry = await db.db("downloads_db").collection("projects_downloads");
   var projectDownloads = [];
-  var stream = await entry.find().stream();
   var projectName = "";
-  await stream.on("data", (doc) => {
+  var a = await entry.find().toArray();
+  for(var doc of a){
     if (doc.id == projectID) {
       if (projectName == "") projectName = doc.name;
       projectDownloads.push({
@@ -35,15 +34,13 @@ async function getData(res, projectID) {
         dateTime: doc.dateTime,
       });
     }
-  });
-  await stream.on("end", () => {
-    var message = {
-      success: "Got historic downloads for project " + projectID,
-      projectID: projectID,
-      projectName: projectName,
-      data: projectDownloads,
-    };
-    console.log(message.success);
-    return res.status(200).json(message);
-  });
+  }
+  var message = {
+    success: "Got historic downloads for project " + projectID,
+    projectID: projectID,
+    projectName: projectName,
+    data: projectDownloads,
+  };
+  console.log(message.success);
+  return res.status(200).json(message);
 }

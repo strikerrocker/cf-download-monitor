@@ -1,12 +1,19 @@
 import axios from "axios";
 import { MongoClient } from "mongodb";
 
+let cachedDb;
+
 export async function connectToDatabase() {
+  if (cachedDb) {
+    console.log("cache")
+    return cachedDb;
+  }
   var MONGODB_URI = process.env.MONGODB_URI;
   if (MONGODB_URI.includes("MONGODB_URI")) {
     MONGODB_URI = MONGODB_URI.split("MONGODB_URI=")[1].split('"')[1];
   }
   const client = new MongoClient(MONGODB_URI);
+  cachedDb = client;
   return await client.connect();
 }
 /**
