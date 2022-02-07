@@ -8,4 +8,4 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Force update backend data
-        run: curl --request GET --url https://cf-download-monitor.vercel.app/api/update_tracked_projects_backend
+        run: curl https://cf-download-monitor.vercel.app/api/update_tracked_projects_backend
