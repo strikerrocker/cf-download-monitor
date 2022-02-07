@@ -9,7 +9,7 @@ export default async (req, res) => {
   for (var i = 0; i < projects.length; i++) {
     var id = projects[i];
     var projectData = await (await connectToCfApi("v1/mods/"+id)).json()
-    await addToDB(db, id, projectData.data.name, projectData.data.downloadCount, projectData.data.dateModified);
+    addToDB(db, id, projectData.data.name, projectData.data.downloadCount, projectData.data.dateModified);
     updatedProjects.push({
       project_name: projectData.data.name,
       download_count: projectData.data.downloadCount,
