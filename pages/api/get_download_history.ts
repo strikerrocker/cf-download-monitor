@@ -21,8 +21,8 @@ export default async (req, res) => {
 };
 
 async function getData(res, projectID) {
-  const db = await connectToDatabase();
-  const entry = await db.db("downloads_db").collection("projects_downloads");
+  const client = await connectToDatabase();
+  const entry = await client.db("downloads_db").collection("projects_downloads");
   var projectDownloads = [];
   var projectName = "";
   var a = await entry.find().toArray();

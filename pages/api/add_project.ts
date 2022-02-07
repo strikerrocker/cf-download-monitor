@@ -9,8 +9,8 @@ export default async (req, res) => {
   ) {
     var projectID = parseInt(req.body.projectID);
     var response = await (await connectToCfApi("v1/mods/" + projectID)).json();
-    const db = await connectToDatabase();
-    await db
+    const client = await connectToDatabase();
+    await client
       .db("downloads_db")
       .collection("projects")
       .insertOne({ projectID: projectID, name: response.data.name });

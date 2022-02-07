@@ -1,33 +1,38 @@
 import axios from "axios";
 import { MongoClient } from "mongodb";
 
-let cachedDb;
+let cachedDb: MongoClient;
+var MONGODB_URI;
+var CF_ACCESSTOKEN;
+var BASE_URL = "https://api.curseforge.com/";
 
 export async function connectToDatabase() {
   if (cachedDb) {
-    console.log("cache")
     return cachedDb;
   }
-  var MONGODB_URI = process.env.MONGODB_URI;
-  if (MONGODB_URI.includes("MONGODB_URI")) {
-    MONGODB_URI = MONGODB_URI.split("MONGODB_URI=")[1].split('"')[1];
+  if (!MONGODB_URI) {
+    MONGODB_URI = process.env.MONGODB_URI;
+    if (MONGODB_URI.includes("MONGODB_URI")) {
+      MONGODB_URI = MONGODB_URI.split("MONGODB_URI=")[1].split('"')[1];
+    }
   }
-  const client = new MongoClient(MONGODB_URI);
+  const client = await MongoClient.connect(MONGODB_URI);
   cachedDb = client;
-  return await client.connect();
+  return client;
 }
 /**
  * Returns a response object convert to text or json before using it.
  */
 export async function connectToCfApi(endpoint, data?) {
-  var CF_ACCESSTOKEN = Buffer.from(
-    process.env.CF_ACCESSTOKEN,
-    "base64"
-  ).toString();
-  if (CF_ACCESSTOKEN.includes("CF_ACCESSTOKEN=")) {
-    CF_ACCESSTOKEN = CF_ACCESSTOKEN.split("CF_ACCESSTOKEN=")[1].split('"')[1];
+  if (!CF_ACCESSTOKEN) {
+    CF_ACCESSTOKEN = Buffer.from(
+      process.env.CF_ACCESSTOKEN,
+      "base64"
+    ).toString();
+    if (CF_ACCESSTOKEN.includes("CF_ACCESSTOKEN=")) {
+      CF_ACCESSTOKEN = CF_ACCESSTOKEN.split("CF_ACCESSTOKEN=")[1].split('"')[1];
+    }
   }
-  var BASE_URL = "https://api.curseforge.com/";
   const headers = {
     "Content-Type": "application/json",
     Accept: "application/json",
@@ -38,8 +43,9 @@ export async function connectToCfApi(endpoint, data?) {
     method: data ? "POST" : "GET",
     body: data ? JSON.stringify(data) : undefined,
     headers: headers,
-  }).then((response) => (res = response))
-  .catch(err=>console.error(err));
+  })
+    .then((response) => (res = response))
+    .catch((err) => console.error(err));
   return res;
 }
 

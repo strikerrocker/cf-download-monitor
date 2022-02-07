@@ -7,8 +7,10 @@ export default async (req, res) => {
     req.body.projectID !== undefined &&
     req.body.projectID !== ""
   ) {
+    const client = await connectToDatabase();
     var response = await (await connectToCfApi("v1/mods/" + req.body.projectID)).json();
-    await addDwnldEntry(
+    addDwnldEntry(
+      client,
       req.body.projectID,
       response.data.name,
       response.data.downloadCount,
