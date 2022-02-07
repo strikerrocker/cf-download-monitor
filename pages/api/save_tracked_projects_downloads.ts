@@ -28,7 +28,7 @@ export default async (req, res) => {
 
 export async function addDwnldEntry(id, name, downloads, dateTime) {
   const db = await connectToDatabase();
-  await db.db("downloads_db").collection("test_projects_downloads").insertOne({
+  await db.db("downloads_db").collection("projects_downloads").insertOne({
     id: id,
     name: name,
     downloads: downloads,
