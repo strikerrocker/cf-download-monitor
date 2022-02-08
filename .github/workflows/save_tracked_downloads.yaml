@@ -8,4 +8,4 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Save tracked projects downloads
-        run: curl --request GET --url https://cf-download-monitor.vercel.app/api/save_tracked_projects_downloads
+        run: curl https://cf-download-monitor.vercel.app/api/save_tracked_projects_downloads
