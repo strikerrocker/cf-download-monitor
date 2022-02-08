@@ -14,7 +14,7 @@ export default async (req, res) => {
     const client = await connectToDatabase();
     await client
       .db("downloads_db")
-      .collection("test_projects")
+      .collection("projects")
       .insertOne({ projectID: projectID, name: response.data.name });
     message = "Added project " + projectID + " successfully.";
     console.log(message);
