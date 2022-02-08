@@ -1,4 +1,3 @@
-import axios from "axios";
 import { MongoClient } from "mongodb";
 
 let cachedDb: MongoClient;
@@ -47,11 +46,4 @@ export async function connectToCfApi(endpoint, data?) {
     .then((response) => (res = response))
     .catch((err) => console.error(err));
   return res;
-}
-
-export async function connectToApi(endpoint, body?) {
-  var BASE_URL = "https://cf-download-monitor.vercel.app/api/";
-  return await axios.get(BASE_URL + endpoint, {
-    data: body,
-  });
 }

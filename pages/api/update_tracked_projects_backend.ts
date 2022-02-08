@@ -1,11 +1,9 @@
-import { connectToApi } from "./_connector";
+import { getTrackedProjects } from "./_helper";
 
 export default async (req, res) => {
   var updatedProjects = [];
-  var response = await connectToApi("tracked_projects");
-  var projects = Array.from(response.data);
-  for (var i = 0; i < projects.length; i++) {
-    var id = projects[i];
+  var projects = await getTrackedProjects();
+  projects.forEach(id=>{
     const headers = {
       "Content-Type": "application/json",
       Accept: "application/json"
@@ -15,16 +13,11 @@ export default async (req, res) => {
       body :JSON.stringify({
         projectID: id,
       }),headers:headers
-    });
+    }).catch(e=>console.log(e));
     updatedProjects.push(id);
-
-    if (i == projects.length - 1) {
-      console.log(
-        "Updated backend data for projects : " + JSON.stringify(updatedProjects)
-      );
-      return res.status(200).json({
-        updated_projects: updatedProjects,
-      });
-    }
-  }
+  })
+  console.log("Updated backend data for projects : " + JSON.stringify(updatedProjects));
+  res.status(200).json({
+    updated_projects: updatedProjects,
+  });
 };

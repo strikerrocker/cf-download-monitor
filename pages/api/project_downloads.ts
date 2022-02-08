@@ -1,4 +1,4 @@
-import { connectToCfApi } from "./_connector";
+import { getHandledResponseCF } from "./_helper";
 
 export default async (req, res) => {
   var { projectID } = req.body;
@@ -15,7 +15,7 @@ export default async (req, res) => {
 };
 
 async function getDownloads(projectID, res) {
-  var response = await (await connectToCfApi("v1/mods/" + projectID)).json();
+  var response = await getHandledResponseCF("v1/mods/" + projectID);
   var data = response.data;
   var message = "Got downloads for project " + data.name + " with id " + projectID;
   console.log(message);

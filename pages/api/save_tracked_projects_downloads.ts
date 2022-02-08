@@ -1,4 +1,5 @@
-import { connectToCfApi, connectToDatabase } from "./_connector";
+import { connectToDatabase } from "./_connector";
+import { addDwnldEntry, getHandledResponseCF } from "./_helper";
 
 export default async (req, res) => {
   var t1 = new Date();
@@ -7,7 +8,7 @@ export default async (req, res) => {
   const entry = await client.db("downloads_db").collection("projects");
   var projects = (await entry.find().toArray()).map((a) => a.projectID);
   for (var id of projects) {
-    var projectData = await (await connectToCfApi("v1/mods/" + id)).json();
+    var projectData = await getHandledResponseCF("v1/mods/" + id);
     addDwnldEntry(client,id, projectData.data.name, projectData.data.downloadCount, projectData.data.dateModified);
     updatedProjects.push({
       project_name: projectData.data.name,
@@ -23,12 +24,3 @@ export default async (req, res) => {
   console.log(message);
   res.status(200).json(message);
 };
-
-export function addDwnldEntry(client,id, name, downloads, dateTime) {
-  client.db("downloads_db").collection("projects_downloads").insertOne({
-    id: id,
-    name: name,
-    downloads: downloads,
-    dateTime: dateTime,
-  });
-}

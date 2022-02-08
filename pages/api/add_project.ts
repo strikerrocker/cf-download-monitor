@@ -1,6 +1,8 @@
-import { connectToCfApi, connectToDatabase } from "./_connector";
+import { connectToDatabase } from "./_connector";
+import { getHandledResponseCF } from "./_helper";
 
 export default async (req, res) => {
+  console.log(req.body)
   var message;
   if (
     req.body !== "" &&
@@ -8,11 +10,11 @@ export default async (req, res) => {
     req.body.projectID !== ""
   ) {
     var projectID = parseInt(req.body.projectID);
-    var response = await (await connectToCfApi("v1/mods/" + projectID)).json();
+    var response = await getHandledResponseCF("v1/mods/" + projectID);
     const client = await connectToDatabase();
     await client
       .db("downloads_db")
-      .collection("projects")
+      .collection("test_projects")
       .insertOne({ projectID: projectID, name: response.data.name });
     message = "Added project " + projectID + " successfully.";
     console.log(message);

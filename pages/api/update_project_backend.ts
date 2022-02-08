@@ -1,4 +1,4 @@
-import { connectToCfApi } from "./_connector";
+import { getHandledResponseCF } from "./_helper";
 var FormData = require("form-data");
 
 export default async (req, res) => {
@@ -18,12 +18,12 @@ export default async (req, res) => {
     req.body.projectID !== undefined &&
     req.body.projectID !== ""
   ) {
-    var response = await (await connectToCfApi("v1/mods/"+req.body.projectID)).json();
+    var response = await getHandledResponseCF("v1/mods/"+req.body.projectID);
     var fileID = response.data.latestFiles[0].id;
     console.info("Trying to update file " + fileID + " in project " + req.body.projectID);
-    var changelog = await connectToCfApi("v1/mods/" + req.body.projectID + "/files/" + fileID + "/changelog");
+    var changelog = await getHandledResponseCF("v1/mods/" + req.body.projectID + "/files/" + fileID + "/changelog");
     var output = [];
-    var changelogData = (await changelog.json()).data;
+    var changelogData = changelog.data;
     //If <br> at end trim else add <br>
     output.push({ OldChangeLog: changelogData });
     if (changelogData.substring(changelogData.length - 4) == "<br>") {

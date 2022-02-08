@@ -34,4 +34,4 @@ yarn-error.log*
 .vercel
 
 #local test
-test.ts
+test*.ts

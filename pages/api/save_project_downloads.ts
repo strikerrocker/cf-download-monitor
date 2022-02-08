@@ -1,5 +1,5 @@
-import { connectToCfApi, connectToDatabase } from "./_connector";
-import { addDwnldEntry } from "./save_tracked_projects_downloads";
+import { connectToDatabase } from "./_connector";
+import { addDwnldEntry, getHandledResponseCF } from "./_helper";
 
 export default async (req, res) => {
   if (
@@ -8,7 +8,7 @@ export default async (req, res) => {
     req.body.projectID !== ""
   ) {
     const client = await connectToDatabase();
-    var response = await (await connectToCfApi("v1/mods/" + req.body.projectID)).json();
+    var response = await getHandledResponseCF("v1/mods/" + req.body.projectID);
     addDwnldEntry(
       client,
       req.body.projectID,

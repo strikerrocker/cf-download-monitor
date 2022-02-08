@@ -1,11 +1,12 @@
-import { connectToCfApi, connectToDatabase } from "./_connector";
+import { connectToDatabase } from "./_connector";
+import { getHandledResponseCF } from "./_helper";
 
 export default async (req, res) => {
   res.statusCode = 500;
   const client = await connectToDatabase();
   const projects = client.db("downloads_db").collection("projects");
   (await projects.find().toArray()).forEach(async (doc) => {
-    var project_data = await (await connectToCfApi("v1/mods/" + doc.projectID)).json();
+    var project_data = await getHandledResponseCF("v1/mods/" + doc.projectID);
     if (doc.name != project_data.data.name) {
       await projects.updateOne(
         { projectID: doc.projectID },

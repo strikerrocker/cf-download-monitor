@@ -5,6 +5,7 @@ export default async function handler(req, res) {
   console.log("Proxying CF API Path : " + url + ", Data : " + JSON.stringify(req.body));
   var response = await connectToCfApi(url, req.body);
   var txt = await response.text();
+  res
   try {
     res.status(response.status).json(JSON.parse(txt));
   } catch (e) {
