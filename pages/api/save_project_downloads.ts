@@ -9,13 +9,12 @@ export default async (req, res) => {
   ) {
     const client = await connectToDatabase();
     var response = await getHandledResponseCF("v1/mods/" + req.body.projectID);
-    addDwnldEntry(
-      client,
-      req.body.projectID,
-      response.data.name,
-      response.data.downloadCount,
-      response.data.dateModified
-    );
+    addDwnldEntry(client, {
+      id: req.body.projectID,
+      name: response.data.name,
+      downloads: response.data.downloadCount,
+      dateTime: response.data.dateModified,
+    });
     var message = {
       project_name: response.data.name,
       download_count: response.data.downloadCount,

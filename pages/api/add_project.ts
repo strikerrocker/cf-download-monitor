@@ -12,7 +12,7 @@ export default async (req, res) => {
     var projectID = parseInt(req.body.projectID);
     var response = await getHandledResponseCF("v1/mods/" + projectID);
     const client = await connectToDatabase();
-    await client
+    client
       .db("downloads_db")
       .collection("projects")
       .insertOne({ projectID: projectID, name: response.data.name });

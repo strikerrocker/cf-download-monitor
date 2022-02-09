@@ -7,5 +7,9 @@ jobs:
   cron:
     runs-on: ubuntu-latest
     steps:
-      - name: Force update backend data
-        run: curl https://cf-download-monitor.vercel.app/api/update_tracked_projects_backend
+      - name: Checkout Repo
+        uses: actions/checkout@v2
+      - name: Install JQ
+        run: sudo apt install jq -y
+      - name: Run script
+        run: ./update_project_backend

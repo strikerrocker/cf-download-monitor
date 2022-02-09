@@ -1,20 +1,22 @@
 import { connectToDatabase } from "./_connector";
-import { addDwnldEntry, getHandledResponseCF } from "./_helper";
+import { addDownloadEntries, getHandledResponseCF } from "./_helper";
 
 export default async (req, res) => {
   var t1 = new Date();
   var updatedProjects = [];
   const client = await connectToDatabase();
-  const entry = await client.db("downloads_db").collection("projects");
+  const entry = client.db("downloads_db").collection("projects");
   var projects = (await entry.find().toArray()).map((a) => a.projectID);
   for (var id of projects) {
     var projectData = await getHandledResponseCF("v1/mods/" + id);
-    addDwnldEntry(client,id, projectData.data.name, projectData.data.downloadCount, projectData.data.dateModified);
     updatedProjects.push({
-      project_name: projectData.data.name,
-      download_count: projectData.data.downloadCount,
+      id: id,
+      name: projectData.data.name,
+      downloads: projectData.data.downloadCount,
+      dateTime: projectData.data.dateModified
     });
   }
+  addDownloadEntries(client,updatedProjects)
   var t2 = new Date();
   var message = {
     updated_projects: updatedProjects,

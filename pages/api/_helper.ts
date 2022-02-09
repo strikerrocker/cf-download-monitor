@@ -1,4 +1,7 @@
+import { MongoClient } from "mongodb";
 import { connectToCfApi, connectToDatabase } from "./_connector";
+
+const downloadsCollection = "projects_downloads";
 
 export async function getTrackedProjects() {
   const client = await connectToDatabase();
@@ -17,11 +20,13 @@ export async function getHandledResponseCF(url, body?) {
   }
 }
 
-export function addDwnldEntry(client,id, name, downloads, dateTime) {
-  client.db("downloads_db").collection("projects_downloads").insertOne({
-    id: id,
-    name: name,
-    downloads: downloads,
-    dateTime: dateTime,
-  });
+export function addDwnldEntry(client,document) {
+  client.db("downloads_db").collection(downloadsCollection).insertOne(document);
+}
+
+export function addDownloadEntries(client: MongoClient, array) {
+  client
+    .db("downloads_db")
+    .collection(downloadsCollection)
+    .insertMany(array);
 }
