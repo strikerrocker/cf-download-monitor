@@ -13,15 +13,22 @@ export default async (req, res) => {
     "X-Api-Token": CF_FILE_API_TOKEN,
   };
   var message;
-  if (
-    req.body !== "" &&
-    req.body.projectID !== undefined &&
-    req.body.projectID !== ""
-  ) {
-    var response = await getHandledResponseCF("v1/mods/"+req.body.projectID);
+  var projectID = req.body.projectID;
+  if (req.body !== "" && projectID !== undefined && projectID !== "") {
+    var response = await getHandledResponseCF("v1/mods/" + projectID);
+    if (response.data == undefined) {
+      return res
+        .status(424)
+        .json({ error: "CF API couldn't be accessed " + projectID });
+    }
     var fileID = response.data.latestFiles[0].id;
-    console.info("Trying to update file " + fileID + " in project " + req.body.projectID);
-    var changelog = await getHandledResponseCF("v1/mods/" + req.body.projectID + "/files/" + fileID + "/changelog");
+    console.info("Trying to update file " + fileID + " in project " + projectID);
+    var changelog = await getHandledResponseCF("v1/mods/" + projectID + "/files/" + fileID + "/changelog");
+    if (changelog.data == undefined) {
+      return res.status(424).json({
+        error: "CF API couldn't be accessed for project changelog" + projectID,
+      });
+    }
     var output = [];
     var changelogData = changelog.data;
     //If <br> at end trim else add <br>
@@ -33,11 +40,7 @@ export default async (req, res) => {
     }
     output.push({ NewChangeLog: changelogData });
 
-    var url =
-      UPLOAD_API_BASE_URL +
-      "api/projects/" +
-      req.body.projectID +
-      "/update-file";
+    var url = UPLOAD_API_BASE_URL + "api/projects/" + projectID + "/update-file";
     var json = JSON.stringify({
       fileID: fileID,
       changelog: changelogData,

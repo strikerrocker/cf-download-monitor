@@ -21,7 +21,9 @@ export async function getHandledResponseCF(url, body?) {
 }
 
 export function addDwnldEntry(client,document) {
-  client.db("downloads_db").collection(downloadsCollection).insertOne(document);
+  client.db("downloads_db").collection(downloadsCollection).insertOne(document,(e,t)=>{
+    if(e)console.log(e)
+  });
 }
 
 export function addDownloadEntries(client: MongoClient, array) {

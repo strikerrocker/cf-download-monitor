@@ -2,15 +2,19 @@ import { connectToDatabase } from "./_connector";
 import { addDwnldEntry, getHandledResponseCF } from "./_helper";
 
 export default async (req, res) => {
-  if (
-    req.body !== "" &&
-    req.body.projectID !== undefined &&
-    req.body.projectID !== ""
-  ) {
+  var projectID = req.body.projectID;
+  if (req.body !== "" && projectID !== undefined && projectID !== "") {
     const client = await connectToDatabase();
-    var response = await getHandledResponseCF("v1/mods/" + req.body.projectID);
+    var response = await getHandledResponseCF("v1/mods/" + projectID);
+    if (response.data == undefined) {
+      return res
+        .status(424)
+        .json({
+          error: "CF API couldn't be accessed for project " + projectID,
+        });
+    }
     addDwnldEntry(client, {
-      id: req.body.projectID,
+      id: parseInt(projectID),
       name: response.data.name,
       downloads: response.data.downloadCount,
       dateTime: response.data.dateModified,

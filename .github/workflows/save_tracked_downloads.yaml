@@ -9,5 +9,7 @@ jobs:
     steps:
       - name: Checkout Repo
         uses: actions/checkout@v2
+      - name: Make script executable
+        uses: chmod +x /scripts/save_tracked_projects_downloads.sh
       - name: Run script
-        run: ./save_projects_downloads.sh
+        run: ./scripts/save_tracked_projects_downloads.sh
