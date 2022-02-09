@@ -10,6 +10,6 @@ jobs:
       - name: Checkout Repo
         uses: actions/checkout@v2
       - name: Make script executable
-        run: chmod +x /scripts/save_tracked_projects_downloads.sh
+        run: chmod +x ./scripts/save_tracked_projects_downloads.sh
       - name: Run script
         run: ./scripts/save_tracked_projects_downloads.sh
