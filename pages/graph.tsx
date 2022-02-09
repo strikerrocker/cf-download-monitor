@@ -14,7 +14,6 @@ import {
   Title,
   Tooltip,
   Legend,
-  Chart,
 } from "chart.js";
 ChartJS.register(
   CategoryScale,
@@ -46,16 +45,15 @@ export default function Graph() {
         .then(async (projects_res) => {
           for (var i = 0; i < projects_res.length; i++) {
             var data = projects_res[i];
-            await fetch("/api/get_download_history?projectID=" + data.id)
+            await fetch("/api/get_download_history?projectID=" + data.projectID)
               .then((res) => res.json())
               .then((history_res) => {
-                project_downloads[data.id] = history_res.data;
+                project_downloads[data.projectID] = history_res.data;
               });
-            tracked_projects.push({ id: data.id, name: data.name });
+            tracked_projects.push({ id: data.projectID, name: data.name });
           }
           setTrackedProjects(tracked_projects);
           setProjectDownloads(project_downloads);
-          console.log("Fetched Download history.");
           alert("Fetched Download history.")
           setDisabled(false);
         });
